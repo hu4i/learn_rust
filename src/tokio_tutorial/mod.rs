@@ -1,6 +1,6 @@
 use std::{
+    task::{Context, Poll, Waker},
     time::{Duration, Instant},
-    task::{Context, Poll},
     sync::{Arc, Mutex},
     pin::Pin,
     future::Future,
@@ -11,31 +11,40 @@ use crossbeam::channel;
 
 pub struct Delay {
     pub when: Instant,
+    waker: Option<Arc<Mutex<Waker>>>,
 }
 
 impl Future for Delay {
-    type Output = &'static str;
+    type Output = ();
 
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>)
-        -> Poll<&'static str>
+    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>)
+        -> Poll<()>
     {
-        if Instant::now() >= self.when {
-            println!("hello world");
-            Poll::Ready("done")
+        if let Some(waker) = &self.waker {
+            let mut waker = waker.lock().unwrap();
+            if !waker.will_wake(cx.waker()) {
+                *waker = cx.waker().clone();
+            }
         } else {
-            let waker = cx.waker().clone();
             let when = self.when;
+            let waker = Arc::new(Mutex::new(cx.waker().clone()));
+            self.waker = Some(waker.clone());
 
             thread::spawn(move || {
                 let now = Instant::now();
 
                 if now < when {
-                    thread::sleep(when - now);
+                    thread::sleep(when-now);
                 }
 
-                waker.wake();
-
+                let waker = waker.lock().unwrap();
+                waker.wake_by_ref();
             });
+        }
+
+        if Instant::now() >= self.when {
+            Poll::Ready(())
+        } else {
             Poll::Pending
         }
     }
@@ -58,13 +67,14 @@ impl Future for MainFuture {
             match *self {
                 State0 => {
                     let when = Instant::now() + Duration::from_millis(10);
-                    let future = Delay { when };
+                    let waker = Some(Arc::new(Mutex::new(cx.waker().clone())));
+                    let future = Delay { when, waker };
                     *self = State1(future);
                 }
                 State1(ref mut my_future) => {
                     match Pin::new(my_future).poll(cx) {
                         Poll::Ready(out) => {
-                            assert_eq!(out, "done");
+                            assert_eq!(out, ());
                             *self = Terminated;
                             return Poll::Ready(());
                         }
