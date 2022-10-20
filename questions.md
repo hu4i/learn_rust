@@ -144,7 +144,7 @@ The `value` has the type `i32`:
 
 ```rust
     list.peek_mut().map(|&mut value| {
-        *value = 7
+        *value = 7 // error occurs
     });
 ```
 
