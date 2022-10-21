@@ -1,3 +1,5 @@
+pub mod blocking_client;
+
 use bytes::{Buf, Bytes, BytesMut};
 use mini_redis::frame::Error::Incomplete;
 use mini_redis::{Frame, Result};
