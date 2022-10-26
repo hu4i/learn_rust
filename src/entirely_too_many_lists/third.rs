@@ -1,3 +1,6 @@
+//! About a persistent immutable singly-linked list with `Rc` and relations between `Rc` and `Arc`. 
+//! [Read more](https://rust-unofficial.github.io/too-many-lists/third.html)
+
 use std::rc::Rc;
 
 pub struct List<T> {
@@ -51,7 +54,18 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
-
+// Drop
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut head = self.head.take();
+        while let Some(node) = head {
+            match Rc::try_unwrap(node) {
+                Ok(mut real_node) => { head = real_node.next.take() }
+                _ => { return; }
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod test {

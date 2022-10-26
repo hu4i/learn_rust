@@ -1,3 +1,6 @@
+//! How to make the "bad" stack "ok"(generic and useful) by using `Option` and `Iterator`, and what *lifetime parameter* is.
+//! [Read more](https://rust-unofficial.github.io/too-many-lists/second.html).
+
 pub struct List<T> {
     head: Link<T>,
 }

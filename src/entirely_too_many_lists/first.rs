@@ -1,5 +1,8 @@
-use std::mem;
+//! How to construct a "bad"(not ok) stack struct using `struct`, `enum`, `std::boxed::Box`, what
+//! *onwership*, *borrowing*, *mutability*, *dropping* etc. are, how to use language built-in testing techniques.
+//! [Read more](https://rust-unofficial.github.io/too-many-lists/first.html).
 
+use std::mem;
 pub struct List {
     head: Link,
 }

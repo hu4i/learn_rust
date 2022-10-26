@@ -46,3 +46,33 @@ impl BlockingClient {
         self.rt.block_on(self.inner.publish(channel, message))
     }
 }
+
+pub struct BlockingSubscriber {
+    inner: mini_redis::client::Subscriber,
+    rt: Runtime,
+}
+
+impl BlockingClient {
+    pub fn subcribe(self, channels: Vec<String>) -> mini_redis::Result<BlockingSubscriber> {
+        let subscriber = self.rt.block_on(self.inner.subscribe(channels))?;
+        Ok(BlockingSubscriber { inner: subscriber, rt: self.rt })
+    }
+}
+
+impl BlockingSubscriber {
+    pub fn get_subscribed(&self) -> &[String] {
+        self.inner.get_subscribed()
+    }
+
+    pub fn next_message(&mut self) -> mini_redis::Result<Option<Message>> {
+        self.rt.block_on(self.inner.next_message())
+    }
+
+    pub fn subscribe(&mut self, channels: &[String]) -> mini_redis::Result<()> {
+        self.rt.block_on(self.inner.subscribe(channels))
+    }
+
+    pub fn unsubscribe(&mut self, channels: &[String]) -> mini_redis::Result<()> {
+        self.rt.block_on(self.inner.unsubscribe(channels))
+    }
+}

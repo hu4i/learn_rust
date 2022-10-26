@@ -7,7 +7,7 @@
     - [[x] What does `Option::map` do here?](#x-what-does-optionmap-do-here)
     - [[x] What will happen if we use `Rc` rather than `&` in `iter`?](#x-what-will-happen-if-we-use-rc-rather-than--in-iter)
   - [Pattern mathing](#pattern-mathing)
-    - [Pattern matching in function parameters](#pattern-matching-in-function-parameters)
+    - [[x] Pattern matching in function parameters](#x-pattern-matching-in-function-parameters)
   - [Lifetimes](#lifetimes)
   - [Scope](#scope)
     - [[x] Why method `next` in impl for `Iterator` is not public?](#x-why-method-next-in-impl-for-iterator-is-not-public)
@@ -128,7 +128,7 @@ Will this change prevent `Node<t>` from being cleaned up?
 
 ## Pattern mathing
 
-### Pattern matching in function parameters
+### [x] Pattern matching in function parameters
 
 In file [second.rs](./src/entirely_too_many_lists/second.rs), method `peek`:
 
@@ -148,14 +148,9 @@ The `value` has the type `i32`:
     });
 ```
 
-This is because of pattern matching occurs in declaration of function parameters, see [Function Parameters](https://doc.rust-lang.org/book/ch18-01-all-the-places-for-patterns.html#function-parameters). `&mut value` in the declaration of function parameters doesn't specify that `value` has the type `&mut X`, but it is a pattern to be mathched, and the `X` here is `i32`. So in the second piece of code, it specifies that we want some type `X` with `&mut`, and the `value` is type `X`. The definition `foo` below does specify that `value` has the type `&mut i32` while `value` of `bar` has the type of `i32`:
+This is because of destructuring references with pattern matching occurs in declaration of function parameters, see [Function Parameters](https://doc.rust-lang.org/book/ch18-01-all-the-places-for-patterns.html#function-parameters) and [destructuring references](https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch18-03-pattern-syntax.html#destructuring-referenceshttps://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch18-03-pattern-syntax.html#destructuring-references).
 
-```rust
-    fn foo(value: &mut i32) {}
-    fn bar(&value: &i32) {}
-```
-
-- Hints
+- Notes
 
     1. It seems that it has different meaning of the declaration of the keyword `self` in the definition of a method, see [Defining Methods](https://doc.rust-lang.org/nightly/book/ch05-03-method-syntax.html?highlight=self#defining-methods), it says:
 
@@ -164,6 +159,8 @@ This is because of pattern matching occurs in declaration of function parameters
         - `&mut self` means `self: &mut Self`
 
     2. Keyword `ref` also doesn't involve in pattern matching, see [Keyword ref](https://doc.rust-lang.org/std/keyword.ref.html).
+    3. What about `fn foo(mut value: mut T)`?
+    4. What about `|&mut value| {...}` and value doesn't implement `copy` trait?
 
 ## Lifetimes
 
