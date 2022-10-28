@@ -1,4 +1,4 @@
-//! About a persistent immutable singly-linked list with `Rc` and relations between `Rc` and `Arc`. 
+//! About a persistent immutable singly-linked list with `Rc` and relations between `Rc` and `Arc`. And how to take `T` out from `Rc<T>`.
 //! [Read more](https://rust-unofficial.github.io/too-many-lists/third.html)
 
 use std::rc::Rc;

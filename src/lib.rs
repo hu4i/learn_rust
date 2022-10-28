@@ -14,7 +14,7 @@
 //! ### Learn Rust With Entirely Too Many Linked Lists
 //! 
 //! [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/) is a tutorial book 
-//! organized around on refining some data structures (mainly lists) with a non-authentic style. The main idea is that when trying to 
+//! organized around on refining some data structures (mainly lists) with a non-authentic, trial-and-error style. The main idea is that when trying to 
 //! construct and refine your code and hearing compiler's screaming, you will (probably) find that it is the smart and knowledgable rust comiler that is teaching you.
 //! 
 //! #### Keywords
