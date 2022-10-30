@@ -348,29 +348,3 @@ impl<T> List<T>{
     }
 }
 
-impl<T> Iterator for IntoIter<T> {
-    type Item = T;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.0.pop_front()
-    }
-}
-
-impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = Ref<'a, T>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-
-        let current_node = self.0.take().unwrap();
-        let ref_elem = Ref::map(current_node, |node| {
-            let next_node = node.next.take().unwrap().as_ref().borrow();
-
-            &node.elem
-        });
-
-
-
-        let d = self.0.as_ref().map(|old_next_node| {
-            self.0 = Ref::map(old_next_node, |nod)
-        })
-    }
-}
