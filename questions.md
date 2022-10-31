@@ -9,6 +9,7 @@
   - [Pattern mathing](#pattern-mathing)
     - [[x] Pattern matching in function parameters](#x-pattern-matching-in-function-parameters)
   - [Lifetimes](#lifetimes)
+    - [[x] How to understand the limitations of the lifetime in this situation?](#x-how-to-understand-the-limitations-of-the-lifetime-in-this-situation)
   - [Scope](#scope)
     - [[x] Why method `next` in impl for `Iterator` is not public?](#x-why-method-next-in-impl-for-iterator-is-not-public)
   - [Type](#type)
@@ -165,6 +166,10 @@ This is because of destructuring references with pattern matching occurs in decl
 ## Lifetimes
 
 See [too-many-lists: Iter](https://rust-unofficial.github.io/too-many-lists/second-iter.html#iter).
+
+### [x] How to understand the limitations of the lifetime in this situation?
+
+See [Fourth Iteration](https://rust-unofficial.github.io/too-many-lists/fourth-iteration.html) and in file [fourth.rs](./src/entirely_too_many_lists/fourth.rs);
 
 ## Scope
 

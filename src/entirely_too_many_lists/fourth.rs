@@ -311,8 +311,6 @@ impl<T> Node<T> {
 /// ```
 pub struct IntoIter<T>(List<T>);
 
-/// An iterator yieds `&T`
-pub struct Iter<'a, T>(Option<Ref<'a, Node<T>>>);
 
 impl<T> List<T>{
 
@@ -341,10 +339,21 @@ impl<T> List<T>{
         IntoIter(self)
     }
 
-    /// Returns an iterator that yields `&T`
-    /// 
-    pub fn iter(&self) -> Iter<T> {
-        Iter(self.head.as_ref().map(|head| head.borrow()))
-    }
+
 }
 
+
+/// An iterator yieds `&T`
+//pub struct Iter<T>(Option<Rc<Node<T>>>);
+pub struct Iter<'a, T>(Option<Ref<'a, Node<T>>>, Option<Ref<'a,  RefCell<Node<T>> >>);
+
+impl<T> List<T>{
+
+    pub fn iter(&self) -> Iter<T> {
+        Iter(self.head.as_ref().map(|head| head.borrow()), None)
+    }
+    // pub fn iter(& self) -> Iter<T> {
+    //     Iter(self.head.as_ref().map(|head| head.clone()))
+    // }
+
+}
