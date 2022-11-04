@@ -34,3 +34,4 @@ pub mod entirely_too_many_lists;
 pub mod asynchronous_programming_in_rust; 
 pub mod my_redis;
 pub mod tokio_tutorial;
+pub mod data_structures;
